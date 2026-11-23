@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>DarkysLauncher</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="titlebar">
+    <div class="titlebar-brand">
+      <span>Darkys <b>Launcher</b></span>
+    </div>
+    <div class="titlebar-controls">
+      <button id="btn-min">&#8211;</button>
+      <button id="btn-close">&#10005;</button>
+    </div>
+  </div>
+
+  <div id="view-login" class="view">
+    <div class="login-card">
+      <h1>DarkysLauncher</h1>
+      <p class="subtitle">Minecraft Java hesabınla bağlan ve oyunu başlat</p>
+      <button id="btn-login-microsoft" class="btn-primary">MICROSOFT İLE GİRİŞ</button>
+      <p id="account-status-login" class="login-status"></p>
+      <p class="muted">Yerel profil tek oyunculu ve çevrimdışı kullanım içindir. Skin, Vanilla dahil oyun profillerine launcher tarafından uygulanır; skin modu gerekmez. Çevrimiçi sunucular için lisanslı Microsoft hesabı gerekir.</p>
+      <input id="username-input" class="username-input" type="text" placeholder="Kullanıcı adın" maxlength="16" autocomplete="off" spellcheck="false" />
+      <button id="btn-login" class="btn-primary">DEVAM ET</button>
+      <p id="login-status" class="login-status"></p>
+    </div>
+  </div>
+
+  <div id="view-main" class="view hidden">
+    <div class="sidebar">
+      <div class="profile-box">
+        <img id="skin-avatar" class="skin-avatar" src="" alt="Skin" />
+        <div class="profile-name" id="profile-name">Oyuncu</div>
+        <p id="account-status" class="account-status"></p>
+        <button id="btn-account" class="btn-secondary small">Microsoft hesabını bağla</button>
+        <label class="skin-variant-label" for="skin-variant">Model</label>
+        <select id="skin-variant" class="skin-variant-select">
+          <option value="classic">Classic / Steve</option>
+          <option value="slim">Slim / Alex</option>
+        </select>
+        <button id="btn-skin" class="btn-secondary small">Skin Seç</button>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-tab="home">Ana Menü</button>
+        <button class="nav-item" data-tab="mods">Modlar</button>
+        <button class="nav-item" data-tab="resourcepacks">Kaynak Paketleri</button>
+        <button class="nav-item" data-tab="shaders">Shaderlar</button>
+        <button class="nav-item" data-tab="settings">Ayarlar</button>
+      </nav>
+
+      <button id="btn-logout" class="btn-ghost">Kullanıcıyı Değiştir</button>
+    </div>
+
+    <div class="content">
+      <section id="tab-home" class="tab active">
+        <div class="hero">
+          <h2>Darkys <span>Launcher</span></h2>
+          <p class="server-ip" id="selected-version-label">Minecraft sürümü yükleniyor...</p>
+        </div>
+
+        <div class="play-area">
+          <div class="settings-group active-modpack-box">
+            <label for="active-modpack-select">Oynanacak Modpack</label>
+            <select id="active-modpack-select"></select>
+            <small id="loader-status" class="muted">Önce Modlar bölümünden bir modpack oluştur veya seç.</small>
+          </div>
+          <div class="legacy-instance-controls" aria-hidden="true">
+            <select id="version-select"></select>
+            <select id="mod-loader"><option value="vanilla">Vanilla</option><option value="fabric">Fabric</option><option value="forge">Forge</option><option value="neoforge">NeoForge</option></select>
+            <span id="version-update-status"></span><button id="btn-refresh-versions"></button>
+          </div>
+
+          <div id="progress-wrap" class="progress-wrap hidden">
+            <div id="progress-bar" class="progress-bar"></div>
+            <span id="progress-text">Hazırlanıyor...</span>
+          </div>
+
+          <button id="btn-play" class="btn-play">OYNA</button>
+          <div id="log-box" class="log-box hidden"></div>
+          <button id="btn-analyze-log" class="btn-secondary small">SON OYUN GÜNLÜĞÜNÜ ANALİZ ET</button>
+          <div id="log-analysis" class="log-analysis hidden" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="tab-mods" class="tab">
+        <div class="mods-header">
+          <div><h2 class="section-title">Modpack Oluştur</h2><p class="muted">Her modpack kendi Minecraft sürümüne, loader'ına ve mod klasörüne sahiptir.</p></div>
+          <div class="mods-badge" id="modpack-active-badge">AKTİF MODPACK: YOK</div>
+        </div>
+        <div class="modpack-create-card">
+          <div class="mods-toolbar">
+            <div class="mods-field"><label for="modpack-name">Modpack adı</label><input id="modpack-name" type="text" maxlength="40" placeholder="Örn. Survival Plus" /></div>
+            <div class="mods-field"><label for="modpack-game-version">Minecraft sürümü</label><select id="modpack-game-version"></select></div>
+            <div class="mods-field"><label for="modpack-loader">Loader</label><select id="modpack-loader"><option value="vanilla">Vanilla</option><option value="fabric">Fabric</option><option value="forge">Forge</option><option value="neoforge">NeoForge</option></select></div>
+            <div class="mods-field"><label for="modpack-loader-version">Loader versiyonu</label><select id="modpack-loader-version"><option value="">Sürüm seç</option></select></div>
+            <button id="btn-create-modpack" class="btn-primary mod-search-btn">OLUŞTUR</button>
+          </div>
+          <div class="modpack-transfer">
+            <span>Darkys modpack’ini veya Modrinth .mrpack paketini taşı ve yedekle.</span>
+            <button id="btn-import-modpack" class="btn-secondary small">MODPACK İÇE AKTAR</button>
+          </div>
+          <div id="modpack-status" class="mods-status"></div>
+          <div id="modpack-list" class="modpack-list"></div>
+        </div>
+
+        <div class="mods-header mod-browser-heading">
+          <div><h2 class="section-title">Modlar</h2><p class="muted">Modrinth veya CurseForge kataloğundan aktif modpack'e uyumlu modları bul ve kur.</p></div>
+          <div class="mods-badge">MODRINTH + CURSEFORGE</div>
+        </div>
+
+        <div class="mods-toolbar">
+          <div class="mods-field mods-search-field">
+            <label for="mod-search">Mod ara</label>
+            <input id="mod-search" type="text" placeholder="Örn. Sodium, JEI, Xaero's..." autocomplete="off" />
+          </div>
+          <div class="mods-field">
+            <label for="mod-source">Mod kataloğu</label>
+            <select id="mod-source"><option value="modrinth">Modrinth</option><option value="curseforge">CurseForge</option></select>
+          </div>
+          <div class="mods-field">
+            <label for="mod-sort">Sıralama</label>
+            <select id="mod-sort">
+              <option value="relevance">En alakalı</option>
+              <option value="downloads">En çok indirilen</option>
+              <option value="updated">Son güncellenen</option>
+              <option value="newest">En yeni</option>
+            </select>
+          </div>
+          <button id="btn-mod-search" class="btn-primary mod-search-btn">ARA</button>
+        </div>
+
+        <div class="mods-meta">
+          <span>Minecraft: <b id="mods-version-label">-</b></span>
+          <span id="mods-result-count">Hazır</span>
+        </div>
+        <div class="shader-note" id="mod-source-note">Modlar yalnızca aktif modpack'e kurulur. CurseForge kullanmak için Ayarlar'a API anahtarını ekle.</div>
+
+        <div id="mods-status" class="mods-status"></div>
+        <div id="mods-results" class="mods-results"></div>
+
+        <div class="installed-header">
+          <h3>Kurulu Modlar</h3>
+          <button id="btn-refresh-installed" class="btn-secondary small">Yenile</button>
+        </div>
+        <div id="installed-mods" class="installed-mods"></div>
+      </section>
+
+      <section id="tab-resourcepacks" class="tab">
+        <div class="pack-header">
+          <div>
+            <h2 class="section-title">Kaynak Paketleri</h2>
+            <p class="muted">Modrinth kataloğundan sürüm uyumlu kaynak paketi ara ve kur.</p>
+          </div>
+          <button id="btn-install-resourcepack" class="btn-primary pack-install-btn">+ KAYNAK PAKETİ EKLE</button>
+        </div>
+
+        <div class="mods-toolbar content-search-toolbar">
+          <div class="mods-field mods-search-field"><label for="resourcepack-search">Kaynak paketi ara</label><input id="resourcepack-search" type="text" placeholder="Örn. Faithful" autocomplete="off" /></div>
+          <button id="btn-search-resourcepacks" class="btn-primary mod-search-btn">ARA</button>
+        </div>
+        <div id="resourcepacks-status" class="pack-status"></div>
+        <div id="resourcepacks-results" class="mods-results"></div>
+        <div class="installed-header"><h3>Kurulu Kaynak Paketleri</h3></div>
+        <div id="resourcepacks-list" class="pack-list"></div>
+      </section>
+
+      <section id="tab-shaders" class="tab">
+        <div class="pack-header">
+          <div>
+            <h2 class="section-title">Shaderlar</h2>
+            <p class="muted">Modrinth kataloğundan shader ara ve kur.</p>
+          </div>
+          <button id="btn-install-shader" class="btn-primary pack-install-btn">+ SHADER EKLE</button>
+        </div>
+
+        <div class="mods-toolbar content-search-toolbar">
+          <div class="mods-field mods-search-field"><label for="shader-search">Shader ara</label><input id="shader-search" type="text" placeholder="Örn. Complementary" autocomplete="off" /></div>
+          <button id="btn-search-shaders" class="btn-primary mod-search-btn">ARA</button>
+        </div>
+        <div class="shader-note">Shader paketini etkin kullanmak için seçili loader ile uyumlu Iris (Fabric) veya Oculus (Forge) modu gerekir. Bunları Modlar bölümünden kurabilirsin.</div>
+        <div id="shaders-status" class="pack-status"></div>
+        <div id="shaders-results" class="mods-results"></div>
+        <div class="installed-header"><h3>Kurulu Shaderlar</h3></div>
+        <div id="shaders-list" class="pack-list"></div>
+      </section>
+
+      <section id="tab-settings" class="tab">
+        <h2 class="section-title">Ayarlar</h2>
+
+        <div class="settings-group">
+          <label>RAM Kullanımı (GB)</label>
+          <div class="ram-row">
+            <div>
+              <span>Min: <b id="ram-min-val">2</b> GB</span>
+              <input type="range" id="ram-min" min="1" max="16" value="2" />
+            </div>
+            <div>
+              <span>Max: <b id="ram-max-val">4</b> GB</span>
+              <input type="range" id="ram-max" min="1" max="16" value="4" />
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <label for="java-path">Özel Java Yolu (opsiyonel)</label>
+          <input type="text" id="java-path" placeholder="C:\\Program Files\\Java\\jdk-21\\bin\\javaw.exe" />
+        </div>
+
+        <div class="settings-group">
+          <label for="curseforge-api-key">CurseForge API anahtarı (isteğe bağlı)</label>
+          <input type="password" id="curseforge-api-key" autocomplete="off" placeholder="Anahtar bu cihaza şifreli kaydedilir" />
+          <small id="curseforge-key-status">Modrinth anahtarsız çalışır. CurseForge API anahtarı CurseForge for Studios geliştirici panelinden alınır.</small>
+          <button id="btn-test-curseforge" class="btn-secondary small" type="button">API ANAHTARINI TEST ET</button>
+          <small id="curseforge-test-status" class="curseforge-test-status"></small>
+          <button id="btn-clear-curseforge-key" class="btn-secondary small" type="button">ANAHTARI KALDIR</button>
+        </div>
+
+        <div class="settings-group auto-server-box">
+          <label>Otomatik Sunucu Bağlantısı</label>
+          <div class="toggle-row">
+            <span>Oto Server Connect</span>
+            <label class="switch">
+              <input type="checkbox" id="auto-server-enabled" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <input type="text" id="auto-server-address" placeholder="play.example.com:25565" />
+          <small>Kapalıysa Minecraft normal şekilde açılır. Açıkken Oyna'ya bastığında bu sunucuya otomatik bağlanır.</small>
+        </div>
+
+        <button id="btn-save-settings" class="btn-primary small">Kaydet</button>
+        <span id="settings-saved" class="saved-msg"></span>
+      </section>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
