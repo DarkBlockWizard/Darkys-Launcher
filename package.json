@@ -1,0 +1,54 @@
+{
+  "name": "darkys-launcher",
+  "version": "1.4.0",
+  "description": "Darkys Minecraft Launcher",
+  "main": "main.js",
+  "author": "Darkys",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win dir --x64 && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-single-exe.ps1",
+    "test:pack": "node --test scripts/test-pack-archive.cjs"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0",
+    "minecraft-launcher-core": "^3.18.1",
+    "msmc": "^5.0.5"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3",
+    "rcedit": "^5.0.2"
+  },
+  "build": {
+    "appId": "com.darkys.launcher",
+    "productName": "Darkys Launcher",
+    "asar": true,
+    "electronDist": "node_modules/electron/dist",
+    "directories": {
+      "output": "release-single"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "executableName": "Darkys",
+      "icon": "src/assets/logo.ico",
+      "target": [
+        "dir"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Darkys Launcher"
+    }
+  }
+}
