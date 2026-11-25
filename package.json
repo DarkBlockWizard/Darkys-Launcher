@@ -1,6 +1,6 @@
 {
   "name": "darkys-launcher",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Darkys Minecraft Launcher",
   "main": "main.js",
   "author": "Darkys",
@@ -45,16 +45,24 @@
       "executableName": "Darkys",
       "icon": "src/assets/logo.ico",
       "artifactName": "Darkys.exe",
-      "target": ["portable"]
+      "target": [
+        "portable"
+      ]
     },
     "linux": {
       "icon": "src/assets/logo.png",
       "category": "Game",
-      "target": ["deb", "rpm"]
+      "target": [
+        "deb",
+        "rpm"
+      ]
     },
     "mac": {
       "icon": "src/assets/logo.icns",
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "nsis": {
       "oneClick": true,
