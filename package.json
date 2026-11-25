@@ -7,7 +7,12 @@
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win dir --x64 && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-single-exe.ps1",
+    "build": "npm run build:win",
+    "build:win:dir": "electron-builder --win dir --x64",
+    "build:win": "electron-builder --win portable --x64",
+    "build:linux": "electron-builder --linux deb rpm --x64",
+    "build:mac": "electron-builder --mac dmg zip --universal",
+    "test": "node --test",
     "test:pack": "node --test scripts/test-pack-archive.cjs"
   },
   "dependencies": {
@@ -34,13 +39,22 @@
       "src/**/*",
       "node_modules/**/*"
     ],
+    "afterPack": "scripts/after-pack.cjs",
     "win": {
       "signAndEditExecutable": false,
       "executableName": "Darkys",
       "icon": "src/assets/logo.ico",
-      "target": [
-        "dir"
-      ]
+      "artifactName": "Darkys.exe",
+      "target": ["portable"]
+    },
+    "linux": {
+      "icon": "src/assets/logo.png",
+      "category": "Game",
+      "target": ["deb", "rpm"]
+    },
+    "mac": {
+      "icon": "src/assets/logo.icns",
+      "target": ["dmg", "zip"]
     },
     "nsis": {
       "oneClick": true,
