@@ -21,12 +21,12 @@ jobs:
             runner: windows-latest
             command: build:win
             artifact-path: release-single/Darkys.exe
+
           - platform: linux-x64
             runner: ubuntu-latest
             command: build:linux
-            artifact-path: |
-              release-single/*.deb
-              release-single/*.rpm
+            artifact-path: release-single/*.deb
+
           - platform: macos-universal
             runner: macos-latest
             command: build:mac
@@ -43,10 +43,6 @@ jobs:
         with:
           node-version: 22
           cache: npm
-
-      - name: Install RPM build tools
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y rpm
 
       - name: Create macOS app icon
         if: runner.os == 'macOS'
@@ -90,7 +86,7 @@ jobs:
           path: release-files
           merge-multiple: true
 
-            - name: Attach files to release
+      - name: Attach files to release
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
