@@ -1,9 +1,10 @@
 {
   "name": "darkys-launcher",
+  "email": "darkyslauncheroffical@gmail.com",
   "version": "1.4.1",
   "description": "Darkys Minecraft Launcher",
   "main": "main.js",
-  "author": "Darkys",
+  "author": "DarkBlockWizard",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
