@@ -175,6 +175,147 @@ async function loadSettings() {
     : 'Modrinth anahtarsız çalışır. CurseForge için geliştirici panelinden API anahtarı ekle.';
 }
 
+// ---------- Launcher Theme System ----------
+
+const LAUNCHER_THEMES = [
+  {
+    id: 'night',
+    name: 'Gece',
+    description: 'Minecraft gece manzarası',
+    file: 'night.jpg'
+  },
+  {
+    id: 'classic',
+    name: 'Classic',
+    description: 'Nostaljik Minecraft görünümü',
+    file: 'Classic.jpg'
+  },
+  {
+    id: 'snowy1',
+    name: 'Karlı Dağlar',
+    description: 'Karlı Minecraft manzarası',
+    file: 'snowy-mountains.jpg'
+  },
+  {
+    id: 'snowy2',
+    name: 'Karlı Dağlar 2',
+    description: 'Alternatif kış manzarası',
+    file: 'snowy-mountains2.jpg'
+  },
+  {
+    id: 'snowy3',
+    name: 'Karlı Dağlar 3',
+    description: 'Alternatif kış manzarası',
+    file: 'snowy-mountains3.jpg'
+  },
+  {
+    id: 'cherry1',
+    name: 'Kiraz Korusu',
+    description: 'Cherry Grove',
+    file: 'cherry-grove.jpg'
+  },
+  {
+    id: 'cherry2',
+    name: 'Kiraz Korusu 2',
+    description: 'Alternatif Cherry Grove',
+    file: 'cherry-grove2.jpg'
+  }
+];
+
+function getThemeImageUrl(file) {
+  return new URL(`./assets/backgrounds/${file}`, document.baseURI).href;
+}
+
+function applyLauncherTheme(themeId, save = true) {
+  const theme = LAUNCHER_THEMES.find(item => item.id === themeId)
+    || LAUNCHER_THEMES[0];
+
+  const imageUrl = getThemeImageUrl(theme.file);
+
+  viewMain.style.backgroundImage = `
+    linear-gradient(
+      rgba(8, 13, 10, .55),
+      rgba(8, 13, 10, .65)
+    ),
+    url("${imageUrl}")
+  `;
+
+  document.querySelectorAll('.theme-card').forEach(card => {
+    const selected = card.dataset.themeId === theme.id;
+
+    card.classList.toggle('selected', selected);
+    card.setAttribute('aria-pressed', String(selected));
+  });
+
+  if (save) {
+    localStorage.setItem('darkysLauncherTheme', theme.id);
+  }
+
+  const status = $('theme-selected-status');
+
+  if (status) {
+    status.textContent = `${theme.name} teması seçildi ✓`;
+  }
+}
+
+function renderThemeCards() {
+  const container = $('theme-grid');
+  container.innerHTML = '';
+
+  for (const theme of LAUNCHER_THEMES) {
+    const card = document.createElement('button');
+
+    card.type = 'button';
+    card.className = 'theme-card';
+    card.dataset.themeId = theme.id;
+
+    const preview = document.createElement('div');
+    preview.className = 'theme-preview';
+
+    const image = document.createElement('img');
+    image.src = getThemeImageUrl(theme.file);
+    image.alt = theme.name;
+    image.draggable = false;
+
+    image.onerror = () => {
+      preview.classList.add('theme-preview-missing');
+      preview.textContent = 'Görsel yüklenemedi';
+    };
+
+    preview.appendChild(image);
+
+    const info = document.createElement('div');
+    info.className = 'theme-card-info';
+
+    const title = document.createElement('strong');
+    title.className = 'theme-card-title';
+    title.textContent = theme.name;
+
+    const description = document.createElement('small');
+    description.className = 'theme-card-description';
+    description.textContent = theme.description;
+
+    info.append(title, description);
+    card.append(preview, info);
+
+    card.onclick = () => applyLauncherTheme(theme.id);
+
+    container.appendChild(card);
+  }
+}
+
+function initLauncherThemes() {
+  renderThemeCards();
+
+  const savedTheme = localStorage.getItem('darkysLauncherTheme');
+
+  const validTheme = LAUNCHER_THEMES.some(theme => theme.id === savedTheme)
+    ? savedTheme
+    : LAUNCHER_THEMES[0].id;
+
+  applyLauncherTheme(validTheme, true);
+}
+
 $('ram-min').oninput = function () {
   $('ram-min-val').textContent = this.value;
   if (Number($('ram-max').value) < Number(this.value)) {
@@ -1035,7 +1176,103 @@ $('btn-analyze-log').onclick = async () => {
   }
 };
 
+// =====================================
+// DARKYS UI SOUND SYSTEM
+// =====================================
+
+let uiAudioContext = null;
+
+function playUiClickSound() {
+  const AudioContextClass =
+    window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextClass) return;
+
+  try {
+    if (!uiAudioContext) {
+      uiAudioContext = new AudioContextClass();
+    }
+
+    if (uiAudioContext.state === 'suspended') {
+      void uiAudioContext.resume().catch(() => {});
+    }
+
+    const oscillator = uiAudioContext.createOscillator();
+    const gain = uiAudioContext.createGain();
+
+    const now = uiAudioContext.currentTime;
+
+    oscillator.type = 'sine';
+
+    // Hafif dijital tıklama sesi
+    oscillator.frequency.setValueAtTime(1150, now);
+    oscillator.frequency.exponentialRampToValueAtTime(
+      680,
+      now + 0.035
+    );
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(
+      0.018,
+      now + 0.004
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      now + 0.045
+    );
+
+    oscillator.connect(gain);
+    gain.connect(uiAudioContext.destination);
+
+    oscillator.start(now);
+    oscillator.stop(now + 0.05);
+
+  } catch (error) {
+    // Ses sistemi desteklenmiyorsa launcher çalışmaya devam eder.
+  }
+}
+
+function initUiEffects() {
+  const soundToggle = $('ui-sounds-enabled');
+
+  if (!soundToggle) return;
+
+  const savedSoundSetting = localStorage.getItem('darkysUiSounds');
+
+  soundToggle.checked = savedSoundSetting === null
+    ? true
+    : savedSoundSetting === 'true';
+
+  soundToggle.addEventListener('change', () => {
+    localStorage.setItem(
+      'darkysUiSounds',
+      String(soundToggle.checked)
+    );
+  });
+
+  document.addEventListener('click', event => {
+    if (!soundToggle.checked) return;
+
+    const target = event.target instanceof Element
+      ? event.target
+      : null;
+
+    if (!target) return;
+
+    const control = target.closest(
+      'button, .theme-card, .nav-item, .switch'
+    );
+
+    if (!control || control.disabled) return;
+
+    playUiClickSound();
+  }, true);
+}
+
 (async function init() {
+  initLauncherThemes();
+  initUiEffects();
   await loadSettings();
   await loadVersions();
   await loadProfile();

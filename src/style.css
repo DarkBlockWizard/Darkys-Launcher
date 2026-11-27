@@ -677,3 +677,325 @@ body {
     width: 100%;
   }
 }
+
+/* ---------- Minecraft Theme Selector ---------- */
+
+#view-main {
+  background-color: var(--bg-dark);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#view-main .sidebar {
+  background: rgba(12, 20, 15, .88);
+  backdrop-filter: blur(12px);
+}
+
+#view-main .content {
+  background: rgba(8, 13, 10, .12);
+}
+
+.theme-settings {
+  width: 100%;
+  max-width: 760px;
+}
+
+.theme-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+  margin-top: 14px;
+}
+
+.theme-card {
+  display: flex !important;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  padding: 0 !important;
+  overflow: hidden;
+  text-align: left;
+  color: var(--text) !important;
+  background: rgba(15, 23, 18, .95) !important;
+  border: 2px solid rgba(255, 255, 255, .10) !important;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.theme-card:hover {
+  border-color: rgba(249, 199, 69, .65) !important;
+  transform: translateY(-3px);
+}
+
+.theme-card.selected {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 16px rgba(249, 199, 69, .25);
+}
+
+.theme-preview {
+  width: 100%;
+  height: 125px;
+  overflow: hidden;
+  background: #17211a;
+}
+
+.theme-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+
+.theme-card:hover .theme-preview img {
+  transform: scale(1.05);
+}
+
+.theme-preview-missing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffaaaa;
+  font-size: 12px;
+}
+
+.theme-card-info {
+  padding: 12px;
+}
+
+.theme-card-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.theme-card-description {
+  display: block;
+  margin-top: 5px;
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.theme-selected-status {
+  display: block;
+  margin-top: 12px;
+  color: var(--green);
+}
+
+@media (max-width: 800px) {
+  .theme-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================
+   DARKYS - TRANSPARENT SIDEBAR THEME
+   ===================================== */
+
+/* Sol paneli şeffaflaştır */
+#view-main .sidebar {
+  background: rgba(8, 15, 10, 0.28);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  border-right: 1px solid rgba(249, 199, 69, 0.25);
+  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Profil alanı */
+#view-main .profile-box {
+  padding: 14px 10px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(10, 16, 12, 0.65),
+    rgba(15, 25, 18, 0.38)
+  );
+
+  border: 1px solid rgba(249, 199, 69, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Sol menü butonları */
+#view-main .nav-item {
+  background: linear-gradient(
+    145deg,
+    rgba(24, 36, 27, 0.82),
+    rgba(10, 18, 12, 0.72)
+  );
+
+  border: 1px solid rgba(249, 199, 69, 0.16);
+  border-radius: 9px;
+
+  color: #e6eee6;
+  padding: 12px 14px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 4px 10px rgba(0,0,0,0.15);
+
+  transition: all 0.2s ease;
+}
+
+/* Üzerine gelindiğinde */
+#view-main .nav-item:hover {
+  background: linear-gradient(
+    145deg,
+    rgba(52, 81, 56, 0.90),
+    rgba(20, 39, 25, 0.88)
+  );
+
+  border-color: rgba(249, 199, 69, 0.55);
+  color: var(--gold);
+
+  transform: translateX(3px);
+}
+
+/* Aktif menü */
+#view-main .nav-item.active {
+  background: linear-gradient(
+    145deg,
+    rgba(249, 199, 69, 0.28),
+    rgba(201, 143, 30, 0.15)
+  );
+
+  border: 1px solid rgba(249, 199, 69, 0.65);
+  color: var(--gold);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 4px 15px rgba(0,0,0,0.20);
+}
+
+/* Profil ve çıkış butonları */
+#view-main .sidebar .btn-secondary,
+#view-main .sidebar .btn-ghost {
+  background: linear-gradient(
+    180deg,
+    rgba(31, 44, 34, 0.92),
+    rgba(13, 23, 16, 0.92)
+  );
+
+  color: #eef3ee;
+  border: 1px solid rgba(249, 199, 69, 0.28);
+  border-radius: 8px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.07),
+    0 3px 8px rgba(0,0,0,0.18);
+
+  transition: all 0.2s ease;
+}
+
+/* Profil butonları hover */
+#view-main .sidebar .btn-secondary:hover,
+#view-main .sidebar .btn-ghost:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(53, 83, 57, 0.95),
+    rgba(23, 49, 29, 0.95)
+  );
+
+  color: var(--gold);
+  border-color: rgba(249, 199, 69, 0.65);
+}
+
+/* Skin model seçimi */
+#view-main .skin-variant-select {
+  background: rgba(10, 18, 12, 0.85);
+  color: #fff;
+  border: 1px solid rgba(249, 199, 69, 0.3);
+  border-radius: 7px;
+  padding: 7px;
+}
+
+/* =====================================
+   DARKYS UI ANIMATIONS
+   ===================================== */
+
+/* Sayfa geçişleri */
+@keyframes darkysPageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.tab.active {
+  animation: darkysPageEnter 240ms cubic-bezier(.2,.7,.3,1) both;
+}
+
+/* Menü animasyonları */
+.nav-item {
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+/* Buton genel animasyonları */
+button:not(:disabled) {
+  transition:
+    background-color .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    box-shadow .18s ease,
+    transform .15s ease;
+}
+
+button:not(:disabled):active {
+  transform: scale(.97);
+}
+
+/* Tema kartları */
+.theme-card {
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+/* Oyun butonu */
+.btn-play {
+  transition:
+    transform .16s ease,
+    filter .2s ease,
+    box-shadow .2s ease;
+}
+
+/* Profil resmi */
+.skin-avatar {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.skin-avatar:hover {
+  transform: scale(1.06);
+  box-shadow: 0 5px 20px rgba(249,199,69,.25);
+}
+
+/* Animasyonları azaltmak isteyen kullanıcılar */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
