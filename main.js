@@ -11,6 +11,12 @@ const AdmZip = require('adm-zip');
 const { ensureLauncherSkinPack, defaultSkinChoice } = require('./src/skin-pack');
 const { validateArchivePath, addPackFolderToZip, writeArchiveEntry, parseMrpackManifest } = require('./src/modpack-archive');
 
+const { app } = require("electron");
+
+if (process.platform === "linux") {
+  app.commandLine.appendSwitch("no-sandbox");
+}f
+
 app.setAppUserModelId('com.darkys.launcher');
 
 // Keep player profiles, Minecraft instances, and runtimes in a stable per-user
@@ -507,10 +513,12 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     title: 'Darkys Launcher',
     icon: path.join(__dirname, 'src', 'assets', 'logo.ico'),
-    width: 1000,
-    height: 650,
+    width: 1100,
+    height: 750,
     minWidth: 900,
     minHeight: 600,
+    fullscreen: false,
+    maximizable: true,
     frame: false,
     resizable: true,
     backgroundColor: '#0e1410',
@@ -518,6 +526,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      autoHideMenuBar: true,
       sandbox: false
     }
   });
