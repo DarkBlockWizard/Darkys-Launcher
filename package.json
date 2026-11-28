@@ -12,7 +12,7 @@
     "start": "electron .",
     "build": "npm run build:win",
     "build:win:dir": "electron-builder --win dir --x64",
-    "build:win": "electron-builder --win portable --x64 --publish never",
+    "build:win": "electron-builder --win nsis --x64 --publish never",
     "build:linux": "electron-builder --linux deb --x64 --publish never",
     "build:mac": "electron-builder --mac dmg zip --universal --publish never",
     "test": "node --test",
@@ -47,9 +47,9 @@
       "signAndEditExecutable": false,
       "executableName": "Darkys",
       "icon": "src/assets/logo.ico",
-      "artifactName": "Darkys.exe",
+      "artifactName": "Darkys-Launcher-Setup-${version}.${ext}",
       "target": [
-        "portable"
+        "nsis"
       ]
     },
     "linux": {
@@ -68,12 +68,16 @@
       ]
     },
     "nsis": {
-      "oneClick": true,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": false,
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Darkys Launcher"
+      "shortcutName": "Darkys Launcher",
+      "installerIcon": "src/assets/logo.ico",
+      "uninstallerIcon": "src/assets/logo.ico",
+      "uninstallDisplayName": "Darkys Launcher",
+      "runAfterFinish": true
     }
   }
 }
