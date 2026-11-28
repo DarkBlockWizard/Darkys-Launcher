@@ -144,7 +144,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           name: Darkys Launcher ${{ github.ref_name }}
-          body_path: .github/release-notes-v1.5.0.md
+          body_path: .github/release-notes-v1.5.1.md
           files: |
             release-files/packages/**/*.exe
             release-files/packages/**/*.deb
