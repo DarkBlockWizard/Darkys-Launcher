@@ -11,10 +11,10 @@ const AdmZip = require('adm-zip');
 const { ensureLauncherSkinPack, defaultSkinChoice } = require('./src/skin-pack');
 const { validateArchivePath, addPackFolderToZip, writeArchiveEntry, parseMrpackManifest } = require('./src/modpack-archive');
 
-app.setAppUserModelId('Darkys Launcher');
+app.setAppUserModelId('com.darkys.launcher');
 
-// Keep player profiles, Minecraft instances, and runtimes stable when the
-// distributable is renamed to the single-file Darkys.exe portable launcher.
+// Keep player profiles, Minecraft instances, and runtimes in a stable per-user
+// location across installed builds and future upgrades.
 app.setPath('userData', path.join(app.getPath('appData'), 'darkys-launcher'));
 const store = new Store({ name: 'darkys-launcher' });
 const launcher = new Client();
