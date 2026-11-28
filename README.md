@@ -16,7 +16,7 @@ Minecraft sürümlerini ve modpack’lerini yönetmek için geliştirilen, Windo
 - Modrinth ve CurseForge içeriklerini arama ve indirme
 - Oyun logları ve çökme raporları için yerel analiz
 - CurseForge API bağlantı testi
-- Tek dosyalı Windows EXE paketi oluşturma
+- Windows için kurulum sihirbazı (NSIS), masaüstü ve Başlat menüsü kısayolları
 
 CurseForge özellikleri için geçerli bir API anahtarı gerekebilir.
 
@@ -55,7 +55,7 @@ A Windows-focused launcher developed for managing Minecraft versions and modpack
 - Search for and download content from Modrinth and CurseForge
 - Local analysis of game logs and crash reports
 - CurseForge API connectivity testing
-- Create single-file Windows EXE packages
+- Windows installer wizard (NSIS) with Desktop and Start Menu shortcuts
 
 A valid API key may be required for CurseForge-related features.
 
