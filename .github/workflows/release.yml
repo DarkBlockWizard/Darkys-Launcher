@@ -79,7 +79,7 @@ jobs:
           echo "Files generated for ${{ matrix.platform }}:"
           find release-single -maxdepth 3 -type f -print
 
-      - name: Upload every build output
+      - name: Upload distributable installer package
         uses: actions/upload-artifact@v7
         with:
           name: darkys-${{ matrix.platform }}
