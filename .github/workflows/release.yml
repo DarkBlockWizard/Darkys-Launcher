@@ -22,9 +22,11 @@ jobs:
           - platform: windows-x64
             runner: windows-latest
             command: build:win
+            artifact-path: release-single/*.exe
           - platform: linux-x64
             runner: ubuntu-latest
             command: build:linux
+            artifact-path: release-single/*.deb
 
     runs-on: ${{ matrix.runner }}
 
@@ -81,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: darkys-${{ matrix.platform }}
-          path: release-single/**
+          path: ${{ matrix.artifact-path }}
           if-no-files-found: error
           retention-days: 14
 
@@ -143,7 +145,11 @@ jobs:
         with:
           name: Darkys Launcher ${{ github.ref_name }}
           body_path: .github/release-notes-v1.5.0.md
-          files: release-files/**/*
+          files: |
+            release-files/packages/**/*.exe
+            release-files/packages/**/*.deb
+            release-files/Darkys-Launcher-${{ github.ref_name }}-Source.zip
+            release-files/SHA256SUMS.txt
           fail_on_unmatched_files: true
           overwrite_files: true
           generate_release_notes: false
